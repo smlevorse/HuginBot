@@ -8,6 +8,10 @@ login_token = None
 with open("token.secret") as creds:
     login_token = creds.readline().strip()
 
+server_password = None
+with open("password.secret") as password_file:
+    server_password = password_file.readline().strip()
+
 if login_token is None:
     logging.log("Failed to load token")
 
@@ -37,9 +41,17 @@ async def get_ip(channel):
         )
 
 
+async def send_password(message):
+    try:
+        await message.author.send(f"The current server password is ||{server_password}||. Please be careful with whom you share this.")
+    except Exception as e:
+        logging.error(f"Caught exception DMing user {message.author} server password", e)
+
 async def process_command(message, command, args):
     if command == "ip":
         await get_ip(message.channel)
+    if command == "password":
+        await send_password(message)
     else:
         await usage(message.channel)
 
@@ -64,7 +76,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('/hugin'):
+    if message.content.startswith('!hugin'):
         parts = message.content.split(' ')
         if len(parts) < 2:
             await usage(message.channel)
