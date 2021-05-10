@@ -61,6 +61,7 @@ async def usage(channel):
                        "you can use the following commands:\n```" +
                        "help - display this information\n" +
                        "ip - discover the ip address of the server\n" +
+                       "password - receive the current server password\n" +
                        "```",
                        channel
                        )
