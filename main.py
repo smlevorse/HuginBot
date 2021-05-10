@@ -26,26 +26,33 @@ async def send_message(message, channel):
 
 
 async def get_ip(channel):
+    ip_address = None
     try:
         upnp_client = miniupnpc.UPnP()
         upnp_client.discoverdelay = 200
         upnp_client.discover()
         upnp_client.selectigd()
-        await send_message(f"The server is currently located at `{upnp_client.externalipaddress()}:2567`", channel)
+        ip_address = upnp_client.externalipaddress()
+        logging.info(f"Server is hosted at {ip_address}")
+        await send_message(f"The server is currently located at `{ip_address}:2567`", channel)
     except Exception as e:
-        logging.error("Could not obtain IP Address", e)
-        await send_message(
-            "I'm sorry, I could not obtain the current IP address of the server. There may be an internet outage in "
-            "Cambridge.",
-            channel
-        )
+        logging.error(f"Could not report IP Address. ip_address={ip_address}", e)
+        if ip_address is None:
+            await send_message(
+                "I'm sorry, I could not obtain the current IP address of the server. There may be an internet outage "
+                "in Cambridge.",
+                channel
+            )
 
 
 async def send_password(message):
     try:
-        await message.author.send(f"The current server password is ||{server_password}||. Please be careful with whom you share this.")
+        logging.info(f"Sending server password to {message.author}")
+        await message.author.send(
+            f"The current server password is ||{server_password}||. Please be careful with whom you share this.")
     except Exception as e:
         logging.error(f"Caught exception DMing user {message.author} server password", e)
+
 
 async def process_command(message, command, args):
     if command == "ip":
