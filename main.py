@@ -33,10 +33,10 @@ async def get_ip(channel):
         upnp_client.discover()
         upnp_client.selectigd()
         ip_address = upnp_client.externalipaddress()
-        logging.info(f"Server is hosted at {ip_address}")
-        await send_message(f"The server is currently located at `{ip_address}:2567`", channel)
+        logging.info(f"Server is hosted at {str(ip_address)}")
+        await send_message(f"The server is currently located at `{str(ip_address)}:2567`", channel)
     except Exception as e:
-        logging.error(f"Could not report IP Address. ip_address={ip_address}", e)
+        logging.error(f"Could not report IP Address. ip_address={str(ip_address)}", e)
         if ip_address is None:
             await send_message(
                 "I'm sorry, I could not obtain the current IP address of the server. There may be an internet outage "
@@ -57,7 +57,7 @@ async def send_password(message):
 async def process_command(message, command, args):
     if command == "ip":
         await get_ip(message.channel)
-    if command == "password":
+    elif command == "password":
         await send_password(message)
     else:
         await usage(message.channel)
