@@ -54,11 +54,24 @@ async def send_password(message):
         logging.error(f"Caught exception DMing user {message.author} server password", e)
 
 
+async def pet(message):
+    try:
+        logging.info(f"{message.author} pet the boar.")
+        await send_message(
+            f":two_hearts: Boar loves you. :two_hearts:",
+            message.channel
+        )
+    except Exception as e:
+        logging.error("Caught exception ")
+
+
 async def process_command(message, command, args):
     if command == "ip":
         await get_ip(message.channel)
     elif command == "password":
         await send_password(message)
+    elif command == "pet":
+        await pet(message)
     else:
         await usage(message.channel)
 
