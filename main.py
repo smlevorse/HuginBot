@@ -34,7 +34,7 @@ async def get_ip(channel):
         upnp_client.selectigd()
         ip_address = upnp_client.externalipaddress()
         logging.info(f"Server is hosted at {str(ip_address)}")
-        await send_message(f"The server is currently located at `{str(ip_address)}:2567`", channel)
+        await send_message(f"The server is currently located at `{str(ip_address)}:2456`", channel)
     except Exception as e:
         logging.error(f"Could not report IP Address. ip_address={str(ip_address)}", e)
         if ip_address is None:
