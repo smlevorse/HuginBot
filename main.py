@@ -58,7 +58,7 @@ async def pet(message):
     try:
         logging.info(f"{message.author} pet the boar.")
         await send_message(
-            f":two_hearts: Boar loves you. :two_hearts:",
+            f":two_hearts: Hugin loves you. :two_hearts:",
             message.channel
         )
     except Exception as e:
